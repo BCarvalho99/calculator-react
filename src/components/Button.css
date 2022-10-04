@@ -11,3 +11,23 @@
   border-bottom: var(--border-button);
   outline: none;
 }
+
+.button:active {
+  background-color: #ccc;
+}
+
+.button.duo {
+  grid-column: span 2;
+}
+
+.button.three {
+  grid-column: span 3;
+}
+
+.button.operator {
+  background-color: #b3a6d3;
+  color: #ffffff;
+}
+.button.operator:active {
+  background-color: #8571b8;
+}
