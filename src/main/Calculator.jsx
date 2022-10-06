@@ -11,7 +11,7 @@ const initialState = {
   current: 0
 }
 export default class Calculator extends Component {
-  state = {...initialState}
+  state = {...initialState} //Inicializador o manipulador de estado da calculadora
   constructor(props) {
     super(props);
     this.clearMemo = this.clearMemo.bind(this);
@@ -19,7 +19,7 @@ export default class Calculator extends Component {
     this.addDig = this.addDig.bind(this);
   }
   clearMemo() {
-    this.setState({...initialState})
+    this.setState({...initialState}) //chama o estado inicial da app
   }
   setOperation(op) {
     if (this.state.current === 0){
@@ -28,13 +28,26 @@ export default class Calculator extends Component {
       const finishOp = op === '='
       const currentOp = this.state.op
       const values = [...this.state.values]
-      try{
-        values[0] = eval(`${values[0]} ${currentOp} ${values[1]}`)
+      
+      switch(currentOp){ //Recebe a inserção de operação e armazena o calculo
+        case '/':
+          values[0] = values[0] / values[1];
+          break;
+        case '+':
+          values[0] = values[0] + values[1];
+          break;
+        case '-':
+          values[0] = values[0] - values[1];
+          break;
+        case '*':
+          values[0] = values[0] * values[1];
+          break;
+        default:
+          values[0] = this.state.values[0]
       }
-      catch(e){
-      values[0] = this.state.values[0]
-      }
+      
       values[1] = 0
+
       this.setState({
         displayValue: values[0],
         op: finishOp ? null : op, 
@@ -48,16 +61,16 @@ export default class Calculator extends Component {
   addDig(d) {
     if (d ==='.' && this.state.displayValue.includes('.')){
       return
-    }
+    } //Validação para impedir a inserção de dois pontos
     const clearDisplay = this.state.displayValue === '0' || this.state.clearDisplay
     const currentValue = clearDisplay ? '' : this.state.displayValue
-    const displayValue = currentValue + d
-    this.setState({displayValue, clearDisplay: false})
+    const newDisplayValue = currentValue + d
+    this.setState({displayValue: newDisplayValue, clearDisplay: false})
     if(d!=='.'){
-      const i = this.state.current
-      const newValue = parseFloat(displayValue)
+      const indice = this.state.current
+      const newValue = parseFloat(newDisplayValue)
       const values = [...this.state.values]
-      values[i]=newValue
+      values[indice]=newValue
       this.setState({values})
     }
   }
